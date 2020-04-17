@@ -5,8 +5,10 @@
 <!– 入力箇所 -->
 
 <div class=“form”>
-<%= form_tag ("/judge") do %>
+<%= form_tag ({ :controller => 'home', :action => 'judge' }) do %>
 <input type="text" name="hand" >
 <input type="submit" value="check">
 <% end %>
 </div>
+
+<%= @messages %>
