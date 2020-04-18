@@ -1,0 +1,15 @@
+<div class="top-main">
+<h1>Check a Porker Hand</h1>
+</div>
+
+<div class="form">
+<%= form_tag ({ :controller => 'home', :action => 'judge' }) do %>
+<input type="text" name="hand" >
+<input type="submit" value="check">
+<% end %>
+</div>
+
+<!– エラー表示箇所 -->
+<div class="error_message">
+<%= @tefuda.error %>
+</div>

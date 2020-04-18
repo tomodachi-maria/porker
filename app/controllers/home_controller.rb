@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-  require_relative "concerns/check"
+  require_relative "../services/check"
   include Check  #include モジュール
 
   def top
@@ -7,8 +7,14 @@ class HomeController < ApplicationController
 
   def judge
     @tefuda = HandCheck.new(params[:hand]) #paramsのデータを持ったインスタンスができる。
-    @tefuda.errorcheck #@tefudaがcheckメソッドを通る。
-    @kekka = @tefuda.messages
-    render :top
-  end
+    @tefuda.errorcheck #@tefudaがerrorcheckメソッドを通る。
+    if @tefuda.error != "any errors"
+      render :error
+    else
+      @tefuda = HandCheck.new(params[:hand])
+      @tefuda.handcheck
+      render :result
+    end
+  end #defのend
+
 end#classのend
