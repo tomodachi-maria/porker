@@ -1,14 +1,11 @@
-<div class=”top-main">
+<div class="top-main">
 <h1>Check a Porker Hand</h1>
 </div>
-
 <!– 入力箇所 -->
-
-<div class=“form”>
+<div class="form">
 <%= form_tag ({ :controller => 'home', :action => 'judge' }) do %>
 <input type="text" name="hand" >
 <input type="submit" value="check">
 <% end %>
 </div>
-
-<%= @messages %>
+<%= @kekka %>
