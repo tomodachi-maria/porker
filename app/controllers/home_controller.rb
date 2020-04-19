@@ -14,7 +14,7 @@ class HomeController < ApplicationController
       @tefuda = HandCheck.new(params[:hand])
       @tefuda.handcheck
       render :result
-    end
+    end #ifのend
   end #defのend
 
 end#classのend
