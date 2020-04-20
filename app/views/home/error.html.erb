@@ -11,5 +11,7 @@
 
 <!– エラー表示箇所 -->
 <div class="error_message">
-  <%= @tefuda.error %>
+  <% @tefuda.error.each do |p| -%>
+  <ul><%= p %></ul>
+  <% end -%>
 </div>
