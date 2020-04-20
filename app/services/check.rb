@@ -24,16 +24,24 @@ module Check
 
       elsif
         @hand.match?(REGEX_0||REGEX_123||REGEX_456789||REGEX_MARK||/\d{3,}/||/[^SDHC0-9]/)
-          @error = [ERROR2_UNSUITABLE]
-          hand_ary.each_with_index do |a, idx|
-            b = a.index(REGEX_0)
-            c = a.index(REGEX_123)
-            d = a.index(REGEX_456789)
-            e = a.index(REGEX_MARK)
-            f = a.index(/\d{3,}/)
-            g = a.index(/[^SDHC0-9]/)
-            @error.push("#{idx + 1}#{ERROR2_WHERE_IS_WRONG}(#{hand_ary[idx]})") if b||c||d||e||f||g
+        @error = [ERROR2_UNSUITABLE]
+        hand_ary.each_with_index.reverse_each do |a, idx| #.reverse_eachを追加
+          b = a.index(REGEX_0)
+          c = a.index(REGEX_123)
+          d = a.index(REGEX_456789)
+          e = a.index(REGEX_MARK)
+          f = a.index(/\d{3,}/)
+          g = a.index(/[^SDHC0-9]/)
+          @error.unshift("#{idx + 1}#{ERROR2_WHERE_IS_WRONG}(#{hand_ary[idx]})") if b||c||d||e||f||g #pushをunshiftに変更
+          pp "111111111111"
+          pp @error
+          pp "111111111111"
           end
+
+          @error = @error.join("\n")
+          pp "22222222222"
+          pp @error
+          pp "22222222222"
 
       elsif
         (hand_ary.count - hand_ary.uniq.count) > 0
