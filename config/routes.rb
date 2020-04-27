@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
-  get "/" => "home#top"
-  #homeコントローラのtopアクションを呼び出してください。
-  post "/judge" => "home#judge"
-  get "/judge" => "home#top"
+  get "/" => "cards#top"
+  #cardsコントローラのtopアクションを呼び出してください。
+  post "/judge" => "cards#judge"
+  get "/judge" => "cards#top"
  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

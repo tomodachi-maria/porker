@@ -3,13 +3,13 @@
 </div>
 
 <div class="form">
-  <%= form_tag ({ :controller => 'home', :action => 'judge' }) do %>
-  <input type="text" name="hand" >
+  <%= form_tag ({ :controller => 'cards', :action => 'judge' }) do %>
+  <textarea type="text" name="hand"><%= @cards.hand %></textarea>
   <input type="submit" value="check">
   <% end %>
 </div>
 
 <!– 結果表示箇所 -->
 <div class="result_message">
-  <%= @tefuda.message %>
+  <%= @cards.result %>
 </div>
