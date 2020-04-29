@@ -9,8 +9,8 @@ module Check
         @hand = hand
       end
       def check_error
-        @hand_ary = @hand.split    #文字列handを、そのまま配列にする。※ ["S1","S2","S3","S4","S5"]
-        @hand_ary_for_error1 = @hand.split(/ /, -1)    #第二引数の負数により連続スペースの間も値になる。
+        @hand_ary = @hand.split
+        @hand_ary_for_error1 = @hand.split(/ /, -1) #第二引数の負数により連続スペースの間も値になる。
         @error = nil
         check_error_3
         check_error_2
