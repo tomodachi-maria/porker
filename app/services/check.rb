@@ -3,8 +3,9 @@ module Check
     require_relative "./fixed_messages"
     include FixedMessages #include モジュール
     require_relative "./regexes"
-    include Regexes #include モジュール
+    include Regexes
     attr_reader :error , :result ,:hand
+
     def initialize(hand) #initializeメソッドは、initializeメソッドに(hand)(=何か引数)を与えるとそれを@handというインスタンス変数にしてくれる。
       @hand = hand
     end
@@ -99,6 +100,9 @@ module Check
       return true if @marks_pairs.max{|a, b| a.to_f <=> b.to_f} == 5 #同じマークの枚数の最大値が５、すなわち同じマークが５枚あることを示す。
       false
     end
+
+
+
 
   end #classのend
 end #moduleのend
