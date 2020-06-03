@@ -102,7 +102,5 @@ module Check
     end
 
 
-
-
   end #classのend
 end #moduleのend
