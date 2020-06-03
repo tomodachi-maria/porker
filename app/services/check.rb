@@ -1,4 +1,3 @@
-
 module Check
   class HandCheck
     require_relative "./fixed_messages"
@@ -37,7 +36,6 @@ module Check
         @error = ERROR3_SAME_CARDS
       end
     end
-
 
     #-------------------------------------------------------------------------
     def check_result
