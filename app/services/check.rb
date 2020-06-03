@@ -16,11 +16,12 @@ module Check
         check_error_2
         check_error_1
       end #defのend
-      #-------------------------------------------------------------------------
+      #------------------------------------------------------------------------
       def check_error_1
         if  @hand_ary.size != 5 ||
             @hand_ary_for_error1.size != 5
           @error = ERROR1_NOT_FIVE_CARDS
+
         end
       end
       def check_error_2
