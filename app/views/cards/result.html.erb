@@ -4,12 +4,12 @@
 
 <div class="form">
   <%= form_tag ({ :controller => 'cards', :action => 'judge' }) do %>
-    <input type="text" name="hand" value="<%= @cards.hand %>" >
+    <input type="text" name="cards" value="<%= @cards.cards %>" >
     <input type="submit" value="check">
   <% end %>
 </div>
 
 <!– 結果表示箇所 -->
 <div class="result_message">
-  <%= @cards.result %>
+  <%= @cards.hand %>
 </div>

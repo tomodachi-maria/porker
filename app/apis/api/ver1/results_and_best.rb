@@ -14,40 +14,59 @@ module API
         end
 
         post :results do
-          @card_set = params[:cards]
+          card_set = params[:cards]
           each_object = []
-          @card_set.each do |card|
+          card_set.each do |card|
             each_object.push(HandCheck.new(card))
           end
 
-          powers = []
+          collect_objects = []
+          error_objects = []
           each_object.each do |o|
-            o.check_result
-            powers.push(o.power)
-            o.check_the_best(powers,o.power)
-            pp "===3=="
-            pp o.power
+            o.check_error
+            if o.error != nil
+              error_objects.push(o)
+            else
+              o.check_result
+              collect_objects.push(o)
+            end
           end
 
-          pp "===1=="
-          pp each_object
+          @powers = []
+          collect_objects.each do |o|
+            @powers.push(o.power)
+          end
 
-          b = []
-          each_object.each do |o|
-            a = {"card" => o.hand ,
-                 "hand" => o.result ,
+          collect_objects.each do |o|
+            o.check_the_best(@powers,o.power)
+          end
+
+
+          collect_cards = []
+          collect_objects.each do |o|
+            a = {"card" => o.cards,
+                 "hand" => o.hand,
                  "best" => o.best
                 }
-            b.push(a)
+            collect_cards.push(a)
           end
 
-          c = {"result" => b }
+          error_cards = []
+          error_objects.each do |o|
+            a = {"card" => o.cards,
+                 "msg" => o.error.join("\n")
+                }
+            error_cards.push(a)
+          end
+
+          c = {"result" => collect_cards, "error" => error_cards }
 
           present c
 
-        end
-
+         end
+       end
       end
     end
   end
-end
+
+# http://localhost:3000/api/ver1/check/results

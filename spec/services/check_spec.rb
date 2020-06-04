@@ -78,57 +78,57 @@ RSpec.describe HandCheck do
       it "10~13,1の場合のストレートフラッシュが正しく判定されること" do
         cards = HandCheck.new("S10 S11 S12 S13 S1")
         cards.check_result
-        expect(cards.result).to be ==(RESULT_STRAIGHT_FLASH)
+        expect(cards.hand).to be ==(RESULT_STRAIGHT_FLASH)
       end
       it "1~13の場合のストレートフラッシュが正しく判定されること" do
         cards = HandCheck.new("S10 S11 S12 S13 S1")
         cards.check_result
-        expect(cards.result).to be ==(RESULT_STRAIGHT_FLASH)
+        expect(cards.hand).to be ==(RESULT_STRAIGHT_FLASH)
       end
       it "フォー・オブ・ア・カインドが正しく判定されること" do
         cards = HandCheck.new("D6 H6 S6 C6 S13")
         cards.check_result
-        expect(cards.result).to be ==(RESULT_FOUR_OF_A_KIND)
+        expect(cards.hand).to be ==(RESULT_FOUR_OF_A_KIND)
       end
       it "フルハウスが正しく判定されること" do
         cards = HandCheck.new("S10 H10 D10 S4 D4")
         cards.check_result
-        expect(cards.result).to be ==(RESULT_FULLHOUSE)
+        expect(cards.hand).to be ==(RESULT_FULLHOUSE)
       end
       it "フラッシュが正しく判定されること" do
         cards = HandCheck.new("H1 H12 H10 H5 H3")
         cards.check_result
-        expect(cards.result).to be ==(RESULT_FLASH)
+        expect(cards.hand).to be ==(RESULT_FLASH)
       end
       it "10~13,1の場合のストレートが正しく判定されること" do
         cards = HandCheck.new("S10 S11 H12 H13 S1")
         cards.check_result
-        expect(cards.result).to be ==(RESULT_STRAIGHT)
+        expect(cards.hand).to be ==(RESULT_STRAIGHT)
       end
       it "1~13の場合のストレートが正しく判定されること" do
         cards = HandCheck.new("S8 S7 H6 H5 S4")
         cards.check_result
-        expect(cards.result).to be ==(RESULT_STRAIGHT)
+        expect(cards.hand).to be ==(RESULT_STRAIGHT)
       end
       it "スリー・オブ・ア・カインドが正しく判定されること" do
         cards = HandCheck.new("S12 C12 D12 S5 C3")
         cards.check_result
-        expect(cards.result).to be ==(RESULT_THREE_OF_A_KIND)
+        expect(cards.hand).to be ==(RESULT_THREE_OF_A_KIND)
       end
       it "ツーペアが正しく判定されること" do
         cards = HandCheck.new("H13 D13 C2 D2 H11")
         cards.check_result
-        expect(cards.result).to be ==(RESULT_TWO_PAIR)
+        expect(cards.hand).to be ==(RESULT_TWO_PAIR)
       end
       it "ワンペアが正しく判定されること" do
         cards = HandCheck.new("C10 S10 S6 H4 H2")
         cards.check_result
-        expect(cards.result).to be ==(RESULT_ONE_PAIR)
+        expect(cards.hand).to be ==(RESULT_ONE_PAIR)
       end
       it "ハイカードが正しく判定されること" do
         cards = HandCheck.new("D1 D10 S9 C5 C4")
         cards.check_result
-        expect(cards.result).to be ==(RESULT_HIGH_CARD)
+        expect(cards.hand).to be ==(RESULT_HIGH_CARD)
       end
   end
 
