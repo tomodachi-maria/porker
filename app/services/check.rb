@@ -4,7 +4,7 @@ module Check
     include FixedMessages #include モジュール
     require_relative "./regexes"
     include Regexes
-    attr_reader :error , :result ,:hand
+    attr_reader :error , :result ,:hand ,:power ,:best
 
     def initialize(hand) #initializeメソッドは、initializeメソッドに(hand)(=何か引数)を与えるとそれを@handというインスタンス変数にしてくれる。
       @hand = hand
@@ -55,33 +55,42 @@ module Check
       case [check_straight?,check_flash?,num_pairs]
       when [true,true,[1,1,1,1,1]]
         @result = RESULT_STRAIGHT_FLASH
+        @power = 9
 
       when [false,false,[4,1]]
         @result = RESULT_FOUR_OF_A_KIND
+        @power = 8
 
       when [false,false,[3,2]]
         @result = RESULT_FULLHOUSE
+        @power = 7
 
       when [false,true,[1,1,1,1,1]]
         @result = RESULT_FLASH
+        @power = 6
 
       when [true,false,[1,1,1,1,1]]
         @result = RESULT_STRAIGHT
+        @power = 5
 
       when [false,false,[3,1,1]]
         @result = RESULT_THREE_OF_A_KIND
+        @power = 4
 
       when [false,false,[2,2,1]]
         @result = RESULT_TWO_PAIR
+        @power = 3
 
       when [false,false,[2,1,1,1]]
         @result = RESULT_ONE_PAIR
+        @power = 2
       else
         @result = RESULT_HIGH_CARD
+        @power = 1
       end
     end #defのend
 
-    private
+
     def check_straight?
       num_for_straight= @num_array.sort.reverse
       if    num_for_straight[0] == num_for_straight[1] + 1 &&
@@ -101,6 +110,14 @@ module Check
       false
     end
 
+    def check_the_best(powers, each_power)
+      strongest_num = powers.max
+      if each_power == strongest_num
+        @best = true
+      else
+        @best = false
+      end
+    end
 
   end #classのend
 end #moduleのend
