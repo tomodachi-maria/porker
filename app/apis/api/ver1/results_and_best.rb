@@ -5,9 +5,9 @@ module API
       include Check
 
 
-
       resource :check do
         #POST htpp://localhost3000/api/ver1/check
+
         desc 'check all cards'
         params do
           requires :cards, type:Array[String]
@@ -53,11 +53,9 @@ module API
 
           error_cards = []
           error_objects.each do |o|
-            error = o.error
             a = {"card" => o.cards,
-                 "msg" => error.join(" ")
+                 "msg" => o.error
                 }
-            pp error
             error_cards.push(a)
           end
 
@@ -71,11 +69,6 @@ module API
             c.store("result",collect_cards)
           end
 
-          pp "===error=="
-          pp collect_cards
-          pp "===error=="
-          pp error_cards
-
           present c
 
          end
@@ -83,5 +76,3 @@ module API
       end
     end
   end
-
-# http://localhost:3000/api/ver1/check/results
