@@ -20,14 +20,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="534d281f-aec0-4404-877f-9cd8fd1ce2b9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/apis/api/ver1/results_and_best.rb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/services/check_result_and_best.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/apis/api/v1/results_and_best.rb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/apis/api/v1/root.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/apis/api/ver1/root.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/services/check.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/check.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/services/check_api.rb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/services/regexes.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/regexes.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/apis/api/ver1/results_and_best.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/apis/api/ver1/results_and_best.rb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -175,7 +169,7 @@
       <option name="presentableId" value="Default" />
       <updated>1591079241307</updated>
       <workItem from="1591079242779" duration="30391000" />
-      <workItem from="1591247037754" duration="20963000" />
+      <workItem from="1591247037754" duration="24077000" />
     </task>
     <task id="LOCAL-00001" summary="pushできるかテスト">
       <created>1591150789418</created>
@@ -212,7 +206,14 @@
       <option name="project" value="LOCAL" />
       <updated>1591176212083</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="&quot;API,errorないバージョン&quot;">
+      <created>1591270913581</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1591270913582</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -236,7 +237,8 @@
     <MESSAGE value="REGEX改善" />
     <MESSAGE value="18:22時点" />
     <MESSAGE value="退勤前" />
-    <option name="LAST_COMMIT_MESSAGE" value="退勤前" />
+    <MESSAGE value="&quot;API,errorないバージョン&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;API,errorないバージョン&quot;" />
   </component>
   <component name="WindowStateProjectService">
     <state x="566" y="334" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1591246349803">
@@ -251,10 +253,10 @@
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state x="565" y="328" key="SettingsEditor/0.0.1680.1050@0.0.1680.1050" timestamp="1591247818368" />
-    <state x="440" y="252" key="Vcs.Push.Dialog.v2" timestamp="1591176214786">
+    <state x="440" y="252" key="Vcs.Push.Dialog.v2" timestamp="1591270920460">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="440" y="252" key="Vcs.Push.Dialog.v2/0.0.1680.1050@0.0.1680.1050" timestamp="1591176214786" />
+    <state x="440" y="252" key="Vcs.Push.Dialog.v2/0.0.1680.1050@0.0.1680.1050" timestamp="1591270920460" />
     <state x="1077" y="247" width="598" height="490" key="find.popup" timestamp="1591243899246">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>

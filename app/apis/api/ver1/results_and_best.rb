@@ -53,13 +53,28 @@ module API
 
           error_cards = []
           error_objects.each do |o|
+            error = o.error
             a = {"card" => o.cards,
-                 "msg" => o.error.join("\n")
+                 "msg" => error.join(" ")
                 }
+            pp error
             error_cards.push(a)
           end
 
-          c = {"result" => collect_cards, "error" => error_cards }
+          c = {}
+          if    collect_cards.empty? == false && error_cards.empty? == false
+            c.store("result",collect_cards)
+            c.store("error",error_cards)
+          elsif collect_cards.empty? == true
+            c.store("error",error_cards)
+          else  error_cards.empty? == true
+            c.store("result",collect_cards)
+          end
+
+          pp "===error=="
+          pp collect_cards
+          pp "===error=="
+          pp error_cards
 
           present c
 
