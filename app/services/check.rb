@@ -1,58 +1,30 @@
 module Check
   class HandCheck
     require_relative "./fixed_messages"
-    include FixedMessages #include モジュール
+    include FixedMessages
+
     require_relative "./regexes"
     include Regexes
-    attr_reader :error , :hand ,:cards ,:power ,:best
 
-    def initialize(cards) #initializeメソッドは、initializeメソッドに(cards)(=何か引数)を与えるとそれを@cardsというインスタンス変数にしてくれる。
+    attr_reader :cards, :error, :hand, :power, :best
+
+    def initialize(cards) #initializeメソッドは、initializeメソッドに何か引数を与えると、それを@cardsというインスタンス変数にしてくれる。
       @cards = cards
     end
+
     def check_error
       @cards_ary = @cards.split
-      check_error_3
-      check_error_2
-      check_error_1
-    end #defのend
-
-    def check_error_1
-      @cards_ary_for_error1 = @cards.split(/ /, -1)
-      if  @cards_ary.size != 5 ||
-          @cards_ary_for_error1.size != 5
-        @error = ERROR1_NOT_FIVE_CARDS
-      end
+      check_error_3_same_cards
+      check_error_2_unsuitable
+      check_error_1_not_five_cards
     end
 
-    def check_error_2
-      error = []
-      @cards_ary.each_with_index do |h,idx|
-        error.push("#{idx + 1}#{ERROR2_WHERE_IS_WRONG}(#{@cards_ary[idx]})") if h.match?(REGEX_ACCEPTABLE) == false
-      end
-      @error = [].concat(error).push(ERROR2_UNSUITABLE) if error != []
-    end
-
-    def check_error_3
-      if @cards_ary.count > @cards_ary.uniq.count
-        @error = ERROR3_SAME_CARDS
-      end
-    end
-
-    #-------------------------------------------------------------------------
     def check_result
-      cards_num = @cards.gsub(/S|H|D|C/, "S" => "", "H" => "", "D" => "", "C" => "")
-      @num_array = cards_num.split.map(&:to_i) #[10,1,3,4,1]（配列内の各要素は数字）みたいになる。
-      num_for_straight= @num_array.sort.reverse
-      num_pairs_hash = @num_array.group_by(&:itself).transform_values(&:size) #{10=>1, 1=>2, 3=>1, 4=>1}みたいになる。
-      num_pairs_array = num_pairs_hash.map{ |_, value| value } #[1,2,1,1]みたいになる。同じ数字の枚数を配列にする。
-      num_pairs = num_pairs_array.sort.reverse
+      # check_straight?
+      # check_flash?
+       count_num_pairs
 
-      cards_mark = @cards.gsub(/\d/,"")
-      mark_array = cards_mark.split
-      mark_pairs_hash = mark_array.group_by(&:itself).transform_values(&:size) #{H=>1, D=>2, S=>2}みたいになる。
-      @marks_pairs = mark_pairs_hash.map{ |_, value| value } #[1, 2, 2]みたいになる。同じマークの枚数を配列にする。
-
-      case [check_straight?,check_flash?,num_pairs]
+      case [check_straight?,check_flash?,@num_pairs]
       when [true,true,[1,1,1,1,1]]
         @hand = RESULT_STRAIGHT_FLASH
         @power = 9
@@ -90,10 +62,45 @@ module Check
       end
     end #defのend
 
+    def check_the_best(powers, each_power)
+      strongest_num = powers.max
+      if each_power == strongest_num
+        @best = true
+      else
+        @best = false
+      end
+    end
+
+
+
+    private
+    def check_error_1_not_five_cards
+      cards_ary_for_error1 = @cards.split(/ /, -1)
+      if @cards_ary.size != 5 ||
+        cards_ary_for_error1.size != 5
+        @error = ERROR1_NOT_FIVE_CARDS
+      end
+    end
+
+    def check_error_2_unsuitable
+      error = []
+      @cards_ary.each_with_index do |h,idx|
+        error.push("#{idx + 1}#{ERROR2_WHERE_IS_WRONG}(#{@cards_ary[idx]})") if h.match?(REGEX_ACCEPTABLE) == false
+      end
+      @error = [].concat(error).push(ERROR2_UNSUITABLE) if error != []
+    end
+
+    def check_error_3_same_cards
+      if @cards_ary.count > @cards_ary.uniq.count
+        @error = ERROR3_SAME_CARDS
+      end
+    end
 
     def check_straight?
-      num_for_straight= @num_array.sort.reverse
-      if    num_for_straight[0] == num_for_straight[1] + 1 &&
+      num_string = @cards.gsub(/S|H|D|C/, "S" => "", "H" => "", "D" => "", "C" => "")
+      @num_ary = num_string.split.map(&:to_i) #数字だけの配列を作る。[10,1,3,4,1]
+      num_for_straight = @num_ary.sort.reverse
+      if num_for_straight[0] == num_for_straight[1] + 1 &&
           num_for_straight[1] + 1 == num_for_straight[2] + 2 &&
           num_for_straight[2] + 2 == num_for_straight[3] + 3 &&
           num_for_straight[3] + 3 == num_for_straight[4] + 4
@@ -106,18 +113,17 @@ module Check
     end
 
     def check_flash?
-      return true if @marks_pairs.max{|a, b| a.to_f <=> b.to_f} == 5 #同じマークの枚数の最大値が５、すなわち同じマークが５枚あることを示す。
-      false
+      mark_string = @cards.gsub(/\d/,"")
+      mark_ary = mark_string.split
+      return true if mark_ary.uniq.size == 1
     end
 
-    def check_the_best(powers, each_power)
-      strongest_num = powers.max
-      if each_power == strongest_num
-        @best = true
-      else
-        @best = false
-      end
+    def count_num_pairs
+      num_pairs_hash = @num_ary.group_by(&:itself).transform_values(&:size) #{10=>1, 1=>2, 3=>1, 4=>1}みたいになる。
+      num_pairs_array = num_pairs_hash.map{ |_, value| value } #[1,2,1,1]みたいになる。同じ数字の枚数を配列にする。
+      @num_pairs = num_pairs_array.sort.reverse
     end
+
 
   end #classのend
 end #moduleのend

@@ -1,19 +1,19 @@
 module API
-  module Ver1
+  module V1
     class ResultsAndBest < Grape::API
       require "./app/services/check"
       include Check
 
 
-      resource :check do
-        #POST htpp://localhost3000/api/ver1/check
+      resource :cards do
+        #POST htpp://localhost3000/api/v1/cards
 
         desc 'check all cards'
         params do
           requires :cards, type:Array[String]
         end
 
-        post :results do
+        post :check do
           card_set = params[:cards]
           each_object = []
           card_set.each do |card|
@@ -60,7 +60,7 @@ module API
           end
 
           c = {}
-          if    collect_cards.empty? == false && error_cards.empty? == false
+          if collect_cards.empty? == false && error_cards.empty? == false
             c.store("result",collect_cards)
             c.store("error",error_cards)
           elsif collect_cards.empty? == true

@@ -19,7 +19,7 @@ module API
       error!({"error" => "unexpected error"}, 500)
     end
 
-    mount API::Ver1::Root
+    mount API::V1::Root
 
     end
   end
