@@ -7,8 +7,6 @@ module Check
 
     attr_reader :cards, :error, :hand, :power, :best
 
-    @@max_power = 0
-
     def initialize(cards) #initializeメソッドは、initializeメソッドに何か引数を与えると、それを@cardsというインスタンス変数にしてくれる。
       @cards = cards
     end
@@ -59,17 +57,6 @@ module Check
       end
     end
 
-    def set_max_power
-    　　@@max_power = @power if @power > @@max_power
-    end
-
-    def check_the_best
-      if @power == @@max_power
-        @best = true
-　　   else
-　　　   @best = false
-　　   end
-    end
 
     private
 

@@ -17,28 +17,45 @@ module API
           card_set.each do |card|
             handcheck_each = HandCheck.new(card)
             handcheck_each.check_error #とりまエラー通して、collect_card_set/error_card_setに振り分ける。
-            if handcheck_each.error == nil
+            if handcheck_each.error == nil #nil? =>trueなら処理する。
               collect_card_set.push(HandCheck.new(card))
             else
               error_card_set.push(HandCheck.new(card))
             end
           end
 
-          collect_card_return = []
+          powers = []
           collect_card_set.each do |c|
-            c.check_result
-            c.check_the_best
-            pp "00000"
-            pp collect_card_set
-            pp "11111"
-            a = {"card" => c.cards,
-                 "hand" => c.hand,
-                 "best" => c.best
-                }
-            collect_card_return.push(a)
+            c.check_result #@powerを持つ。
+            powers.push(c.power)#powers = [1,4,4,6]みたいになる
+          end
+
+          # collect_card_set.each do |c|
+          #   if  c.power == powers.max
+          #     @best = true
+          #   else
+          #     @best = false
+          #   end
+          # end
+
+            collect_card_return = []
+            collect_card_set.each do |c|
+              if  c.power == powers.max
+                a = {"card" => c.cards,
+                    "hand" => c.hand,
+                    "best" => true
+                      }
+              else
+                a = {"card" => c.cards,
+                    "hand" => c.hand,
+                    "best" => false
+                      }
+              end
+              collect_card_return.push(a)
+            end
+
             pp "collect_card_return"
             pp collect_card_return
-          end
 
           error_card_return = []
           error_card_set.each do |e|

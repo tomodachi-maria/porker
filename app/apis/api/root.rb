@@ -15,9 +15,9 @@ module API
     end
 
     #それ以外は500（システムの方に問題があるという風に返す。）
-    rescue_from :all do
-      error!({"error" => "unexpected error"}, 500)
-    end
+    # rescue_from :all do
+    #   error!({"error" => "unexpected error"}, 500)
+    # end
 
     mount API::V1::Root
 
