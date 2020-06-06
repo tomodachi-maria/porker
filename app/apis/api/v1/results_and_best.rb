@@ -4,10 +4,7 @@ module API
       require "./app/services/check"
       include Check
 
-
       resource :cards do
-        #POST htpp://localhost3000/api/v1/cards
-
         desc 'check all cards'
         params do
           requires :cards, type:Array[String]
@@ -15,61 +12,54 @@ module API
 
         post :check do
           card_set = params[:cards]
-          each_object = []
+          collect_card_set = []
+          error_card_set = []
           card_set.each do |card|
-            each_object.push(HandCheck.new(card))
-          end
-
-          collect_objects = []
-          error_objects = []
-          each_object.each do |o|
-            o.check_error
-            if o.error != nil
-              error_objects.push(o)
+            handcheck_each = HandCheck.new(card)
+            handcheck_each.check_error #とりまエラー通して、collect_card_set/error_card_setに振り分ける。
+            if handcheck_each.error == nil
+              collect_card_set.push(HandCheck.new(card))
             else
-              o.check_result
-              collect_objects.push(o)
+              error_card_set.push(HandCheck.new(card))
             end
           end
 
-          @powers = []
-          collect_objects.each do |o|
-            @powers.push(o.power)
-          end
-
-          collect_objects.each do |o|
-            o.check_the_best(@powers,o.power)
-          end
-
-
-          collect_cards = []
-          collect_objects.each do |o|
-            a = {"card" => o.cards,
-                 "hand" => o.hand,
-                 "best" => o.best
+          collect_card_return = []
+          collect_card_set.each do |c|
+            c.check_result
+            c.check_the_best
+            pp "00000"
+            pp collect_card_set
+            pp "11111"
+            a = {"card" => c.cards,
+                 "hand" => c.hand,
+                 "best" => c.best
                 }
-            collect_cards.push(a)
+            collect_card_return.push(a)
+            pp "collect_card_return"
+            pp collect_card_return
           end
 
-          error_cards = []
-          error_objects.each do |o|
-            a = {"card" => o.cards,
-                 "msg" => o.error
+          error_card_return = []
+          error_card_set.each do |e|
+            e.check_error
+            a = {"card" => e.cards,
+                 "msg" => e.error
                 }
-            error_cards.push(a)
+            error_card_return.push(a)
           end
 
-          c = {}
-          if collect_cards.empty? == false && error_cards.empty? == false
-            c.store("result",collect_cards)
-            c.store("error",error_cards)
-          elsif collect_cards.empty? == true
-            c.store("error",error_cards)
-          else  error_cards.empty? == true
-            c.store("result",collect_cards)
+          p = {}
+          if collect_card_set.empty? == false && error_card_set.empty? == false #エラーも正しいのも両方ある。
+            p.store("result",collect_card_return)
+            p.store("error",error_card_return)
+          elsif collect_card_set.empty? == true
+            p.store("error",error_card_return)
+          else  error_card_set.empty? == true
+            p.store("result",collect_card_return)
           end
 
-          present c
+          present p
 
          end
        end

@@ -2,11 +2,12 @@ module Check
   class HandCheck
     require_relative "./fixed_messages"
     include FixedMessages
-
     require_relative "./regexes"
     include Regexes
 
     attr_reader :cards, :error, :hand, :power, :best
+
+    @@max_power = 0
 
     def initialize(cards) #initializeメソッドは、initializeメソッドに何か引数を与えると、それを@cardsというインスタンス変数にしてくれる。
       @cards = cards
@@ -58,13 +59,16 @@ module Check
       end
     end
 
-    def check_the_best(powers, each_power)
-      strongest_num = powers.max
-      if each_power == strongest_num
+    def set_max_power
+    　　@@max_power = @power if @power > @@max_power
+    end
+
+    def check_the_best
+      if @power == @@max_power
         @best = true
-      else
-        @best = false
-      end
+　　   else
+　　　   @best = false
+　　   end
     end
 
     private
@@ -118,7 +122,6 @@ module Check
     end
 
     def count_num_pairs
-
       num_pairs_hash = @num_ary.group_by(&:itself).transform_values(&:size) #{10=>1, 1=>2, 3=>1, 4=>1}みたいになる。
       num_pairs_array = num_pairs_hash.map{ |_, value| value } #[1,2,1,1]みたいになる。同じ数字の枚数を配列にする。
       @num_pairs = num_pairs_array.sort.reverse
