@@ -15,4 +15,7 @@ module FixedMessages
   RESULT_ONE_PAIR = "ワンペアだね！いいね！"
   RESULT_HIGH_CARD = "ハイカード"
 
+  API_ERROR_404 = "不正なURLでござる。"
+  API_ERROR_400 = "不正なリクエストです。"
+
 end

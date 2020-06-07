@@ -54,9 +54,6 @@ module API
               collect_card_return.push(a)
             end
 
-            pp "collect_card_return"
-            pp collect_card_return
-
           error_card_return = []
           error_card_set.each do |e|
             e.check_error

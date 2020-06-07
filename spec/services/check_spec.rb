@@ -5,15 +5,15 @@ include FixedMessages
 RSpec.describe HandCheck do
 
   describe '#check_error' do
-    context "ERROR1が機能すること" do
+    context "ERROR1が機能すること" do #contextは条件みたいに書くらしい。#HandCheck.new(変数)は、毎回やるのでbefore do-endすると良い。
       it "/,　_では区切れないこと" do
         cards = HandCheck.new("S1/S2,S3　S4_S5")
-        a = cards.hand
+        a = cards.cards
         expect(a.split).to be ==["S1/S2,S3　S4_S5"]
       end
       it "文頭/末、および2連続の半角スペースは、1枚に数えられてしまうこと" do
         cards = HandCheck.new(" S1  S2 S3 S4 S5 ")
-        a = cards.hand
+        a = cards.cards
         expect(a.split(/ /, -1)).to eq ["","S1","","S2","S3","S4","S5",""]
       end
       it "指定したカードが4枚の時にERROR1を返すこと" do
