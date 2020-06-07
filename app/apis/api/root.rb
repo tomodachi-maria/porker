@@ -1,17 +1,17 @@
 module API
   class Root < Grape::API
-    #http://localhost:3000/api
+    include FixedMessages
     prefix 'api'
     format :json
 
     #エンドポイントの指定が違う時,POSTじゃない時
     route :any, '*path' do
-      error!({"error" => [{ "msg" => "不正なURLでござる。"}] } , 404)
+      error!({"error" => [{ "msg" => API_ERROR_404}] } , 404)
     end
 
     #paramsがcardsじゃない時
     rescue_from Grape::Exceptions::Base do
-      error!({"error" => [{ "msg" => "不正なリクエストです。"}] } , 400)
+      error!({"error" => [{ "msg" => API_ERROR_400}] } , 400)
     end
 
     #それ以外は500（システムの方に問題があるという風に返す。）

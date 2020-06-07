@@ -20,8 +20,6 @@ module API
             each_card.push(handcheck)
           end
 
-          
-
           powers = []
           each_card.each do |c|
             powers.push(c.power)
@@ -36,10 +34,10 @@ module API
               @best = false
             end
             if c.error == nil
-            collect_card_return.push({"card":c.cards, "hand":c.hand, "best":@best})
+              collect_card_return.push({"card":c.cards, "hand":c.hand, "best":@best})
             else
-            error_card_return.push({"card":c.cards, "msg":c.error})
-          end
+              error_card_return.push({"card":c.cards, "msg":c.error})
+            end
           end
 
           p = {}

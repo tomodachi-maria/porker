@@ -3,16 +3,13 @@ include Check
 include FixedMessages
 
 RSpec.describe HandCheck do
-
   describe '#check_error' do
     context "ERROR1が機能すること" do #contextは条件みたいに書くらしい。#HandCheck.new(変数)は、毎回やるのでbefore do-endすると良い。
-
       it "/,　_では区切れないこと" do
         cards = HandCheck.new("S1/S2,S3　S4_S5")
         a = cards.cards
         expect(a.split).to be ==["S1/S2,S3　S4_S5"]
       end
-    end
       it "文頭/末、および2連続の半角スペースは、1枚に数えられてしまうこと" do
         cards = HandCheck.new(" S1  S2 S3 S4 S5 ")
         a = cards.cards
@@ -28,7 +25,8 @@ RSpec.describe HandCheck do
         cards.check_error
         expect(cards.error).to be == (ERROR1_NOT_FIVE_CARDS)
       end
-    end #context
+    end
+
 
     context "ERROR2が機能すること" do
       it "小文字のアルファベットが含まれている時にERROR2を返すこと" do
@@ -73,7 +71,7 @@ RSpec.describe HandCheck do
         expect(cards.error).to match ["1#{ERROR2_WHERE_IS_WRONG}(s1)",ERROR2_UNSUITABLE]
       end
     end
-  end #describe
+  end
 
 
   describe "#check_result" do
@@ -133,7 +131,4 @@ RSpec.describe HandCheck do
         expect(cards.hand).to be ==(RESULT_HIGH_CARD)
       end
   end
-
-
 end
- end #RSpec.describe
