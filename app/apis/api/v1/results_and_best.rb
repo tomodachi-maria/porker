@@ -12,64 +12,43 @@ module API
 
         post :check do
           card_set = params[:cards]
-          collect_card_set = []
-          error_card_set = []
+          each_card = []
           card_set.each do |card|
-            handcheck_each = HandCheck.new(card)
-            handcheck_each.check_error #とりまエラー通して、collect_card_set/error_card_setに振り分ける。
-            if handcheck_each.error == nil #nil? =>trueなら処理する。
-              collect_card_set.push(HandCheck.new(card))
-            else
-              error_card_set.push(HandCheck.new(card))
-            end
+            handcheck = HandCheck.new(card)
+            handcheck.check_error
+            handcheck.check_result
+            each_card.push(handcheck)
           end
+
+          
 
           powers = []
-          collect_card_set.each do |c|
-            c.check_result #@powerを持つ。
-            powers.push(c.power)#powers = [1,4,4,6]みたいになる
+          each_card.each do |c|
+            powers.push(c.power)
           end
 
-          # collect_card_set.each do |c|
-          #   if  c.power == powers.max
-          #     @best = true
-          #   else
-          #     @best = false
-          #   end
-          # end
-
-            collect_card_return = []
-            collect_card_set.each do |c|
-              if  c.power == powers.max
-                a = {"card" => c.cards,
-                    "hand" => c.hand,
-                    "best" => true
-                      }
-              else
-                a = {"card" => c.cards,
-                    "hand" => c.hand,
-                    "best" => false
-                      }
-              end
-              collect_card_return.push(a)
-            end
-
+          collect_card_return = []
           error_card_return = []
-          error_card_set.each do |e|
-            e.check_error
-            a = {"card" => e.cards,
-                 "msg" => e.error
-                }
-            error_card_return.push(a)
+          each_card.each do |c|
+            if  c.power == powers.max
+              @best = true
+            else
+              @best = false
+            end
+            if c.error == nil
+            collect_card_return.push({"card":c.cards, "hand":c.hand, "best":@best})
+            else
+            error_card_return.push({"card":c.cards, "msg":c.error})
+          end
           end
 
           p = {}
-          if collect_card_set.empty? == false && error_card_set.empty? == false #エラーも正しいのも両方ある。
+          if collect_card_return != nil && error_card_return != nil
             p.store("result",collect_card_return)
             p.store("error",error_card_return)
-          elsif collect_card_set.empty? == true
+          elsif collect_card_return == nil
             p.store("error",error_card_return)
-          else  error_card_set.empty? == true
+          else  error_card_return == nil
             p.store("result",collect_card_return)
           end
 

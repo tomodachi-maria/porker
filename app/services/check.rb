@@ -5,7 +5,7 @@ module Check
     require_relative "./regexes"
     include Regexes
 
-    attr_reader :cards, :error, :hand, :power, :best
+    attr_reader :cards, :error, :hand, :power
 
     def initialize(cards) #initializeメソッドは、initializeメソッドに何か引数を与えると、それを@cardsというインスタンス変数にしてくれる。
       @cards = cards
@@ -84,7 +84,7 @@ module Check
 
     def check_straight?
       @num_string = @cards.gsub(/S|H|D|C/, "S" => "", "H" => "", "D" => "", "C" => "")
-      @num_ary = @num_string.split.map(&:to_i) #数字だけの配列を作る。[10,1,3,4,1]
+      @num_ary = @num_string.split.map(&:to_i)
       num_for_straight = @num_ary.sort.reverse
       if num_for_straight[0] == num_for_straight[1] + 1 &&
           num_for_straight[1] + 1 == num_for_straight[2] + 2 &&
@@ -113,7 +113,6 @@ module Check
       num_pairs_array = num_pairs_hash.map{ |_, value| value } #[1,2,1,1]みたいになる。同じ数字の枚数を配列にする。
       @num_pairs = num_pairs_array.sort.reverse
     end
-
 
   end
 end
