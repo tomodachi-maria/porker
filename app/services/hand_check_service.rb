@@ -6,6 +6,7 @@ module HandCheckModule
     include Regexes
     attr_reader :cards, :errors, :hand, :power, :best
 
+      @@max_power = 0
     def initialize(cards)
       @cards = cards
       @card_ary = @cards.split
@@ -53,13 +54,13 @@ module HandCheckModule
         @hand = RESULT_HIGH_CARD
         @power = 1
       end
-      # @@max_power = 0
-      # @@max_power = @power if @@max_power < @power
+      @@max_power = @power if @power > @@max_power
     end
 
-    # def check_best
-    #   @best = true if @power == @@max_power
-    # end
+    def check_best
+      @best = true if @power == @@max_power
+    end
+
 
     private
 

@@ -10,6 +10,7 @@ RSpec.describe "Cards", type: :request do
       before do
         @params = {"cards": ["D2 S3 D3 D11 C2","H1 H4 H5 H11 H10"]}
         post url, params: cards
+        @@max_power = 0
         @json = JSON.parse(response.body)
       end
       it "HTTPメソッド201が返ること" do
@@ -28,6 +29,7 @@ RSpec.describe "Cards", type: :request do
     context "強さが等しい正しい手札のみが送られてきたとき" do
       before do
         @params = {"cards": ["S2 S3 S4 S5 S6","H1 H10 H11 H12 H13"]}
+        @@max_power = 0
         post url, params: cards
         @json = JSON.parse(response.body)
       end
@@ -47,6 +49,7 @@ RSpec.describe "Cards", type: :request do
     context "エラーを含んだ手札のみ送られてきたとき" do
       before do
         @params = {"cards": ["D 3 D3 D11 C2","H1 H5 H11 H10"]}
+        @@max_power = 0
         post url, params: cards
         @json = JSON.parse(response.body)
       end
@@ -64,6 +67,7 @@ RSpec.describe "Cards", type: :request do
     context "正しい手札・エラーを含んだ手札の両方があるとき" do
       before do
         @params = {"cards": ["D2 S3 D3 D11 C2","H1 H5 H11 H10"]}
+        @@max_power = 0
         post url, params: cards
         @json = JSON.parse(response.body)
       end
@@ -111,6 +115,7 @@ RSpec.describe "Cards", type: :request do
       end
     end
   end
+
 
   describe "HTTPコード400系" do
     context "paramsがcardsでないとき" do

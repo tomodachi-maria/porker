@@ -12,14 +12,10 @@ module API
         post :check do
           cards_set = params[:cards]
           handcheck_list = []
-          max_power = 0
           cards_set.each do |card|
             handcheck = HandCheck.new(card)
             handcheck.check_error
-            if handcheck.errors.nil?
-              handcheck.check_result
-              max_power = handcheck.power if max_power < handcheck.power
-            end
+            handcheck.check_result if handcheck.errors.nil?
             handcheck_list.push(handcheck)
           end
 
@@ -27,10 +23,8 @@ module API
           errors = []
           handcheck_list.each do |handcheck|
             if handcheck.errors.nil?
-              # handcheck.check_best
-              best =false
-              best = true if handcheck.power == max_power
-              results.push({"card":handcheck.cards, "hand":handcheck.hand, "best":best})
+              handcheck.check_best
+              results.push({"card":handcheck.cards, "hand":handcheck.hand, "best":handcheck.best})
             else
               errors.push({"card":handcheck.cards, "msg":handcheck.errors})
             end
@@ -44,4 +38,4 @@ module API
        end
       end
     end
-    end
+  end

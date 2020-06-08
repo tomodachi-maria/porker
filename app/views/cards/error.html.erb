@@ -11,7 +11,7 @@
 
 <!– エラー表示箇所 -->
 <div class="error_message">
-  <% @cards.errors.each do |p| -%>
-    <ul><%= p %></ul>
+  <% @cards.errors.each do |error| -%>
+    <ul><%= error %></ul>
   <% end -%>
 </div>

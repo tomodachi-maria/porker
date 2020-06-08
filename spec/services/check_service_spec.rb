@@ -6,7 +6,7 @@ include FixedMessages
 RSpec.describe HandCheck do
   let(:cards){HandCheck.new(@params)}
   describe '#check_error' do
-    context "ERROR_CARD_SIZEが機能すること" do #contextは条件みたいに書くらしい。#HandCheck.new(変数)は、毎回やるのでbefore do-endすると良い。
+    context "ERROR_CARD_SIZEが機能すること" do
       it "/,　_では区切れないこと" do
         expect("S1/S2,S3　S4_S5".split).to be ==["S1/S2,S3　S4_S5"]
       end
