@@ -1,11 +1,15 @@
 require 'rails_helper'
+require_relative "../../app/services/fixed_messages"
 include FixedMessages
-RSpec.describe "ResultsAndBest", type: :request do
-       @sample = {"cards": ["D2 S3 D3 D11 C2","H1 H5 H11 H10"]}
+
+RSpec.describe "Cards", type: :request do
+  let(:url){"/api/v1/cards/check"}
+  let(:cards){@params}
   describe "HTTPコード200系" do
     context "強さの異なる正しい手札のみが送られてきたとき" do
       before do
-        post "/api/v1/cards/check", params: {"cards": ["D2 S3 D3 D11 C2","H1 H4 H5 H11 H10"]}
+        @params = {"cards": ["D2 S3 D3 D11 C2","H1 H4 H5 H11 H10"]}
+        post url, params: cards
         @json = JSON.parse(response.body)
       end
       it "HTTPメソッド201が返ること" do
@@ -23,7 +27,8 @@ RSpec.describe "ResultsAndBest", type: :request do
 
     context "強さが等しい正しい手札のみが送られてきたとき" do
       before do
-        post "/api/v1/cards/check", params: {"cards": ["S2 S3 S4 S5 S6","H1 H10 H11 H12 H13"]}
+        @params = {"cards": ["S2 S3 S4 S5 S6","H1 H10 H11 H12 H13"]}
+        post url, params: cards
         @json = JSON.parse(response.body)
       end
       it "HTTPメソッド201が返ること" do
@@ -41,7 +46,8 @@ RSpec.describe "ResultsAndBest", type: :request do
 
     context "エラーを含んだ手札のみ送られてきたとき" do
       before do
-        post "/api/v1/cards/check", params: {"cards": ["D 3 D3 D11 C2","H1 H5 H11 H10"]}
+        @params = {"cards": ["D 3 D3 D11 C2","H1 H5 H11 H10"]}
+        post url, params: cards
         @json = JSON.parse(response.body)
       end
       it "HTTPメソッド201が返ること" do
@@ -57,7 +63,8 @@ RSpec.describe "ResultsAndBest", type: :request do
 
     context "正しい手札・エラーを含んだ手札の両方があるとき" do
       before do
-        post "/api/v1/cards/check", params: {"cards": ["D2 S3 D3 D11 C2","H1 H5 H11 H10"]}
+        @params = {"cards": ["D2 S3 D3 D11 C2","H1 H5 H11 H10"]}
+        post url, params: cards
         @json = JSON.parse(response.body)
       end
       it "HTTPメソッド201が返ること" do
@@ -77,9 +84,10 @@ RSpec.describe "ResultsAndBest", type: :request do
 
 
   describe "HTTPコード404系" do
+    @sample = {"cards": ["D2 S3 D3 D11 C2","H1 H5 H11 H10"]}
     context "POST リクエストでないとき" do
       before do
-        get "/api/v1/cards/check", params: @sample
+        get url, params: cards
         @json = JSON.parse(response.body)
       end
       it "HTTPメソッド404が返ること" do
@@ -92,7 +100,7 @@ RSpec.describe "ResultsAndBest", type: :request do
 
     context "URLが不正なとき" do
       before do
-        post "/api/v1/cards/aaaaa", params: @sample
+        post "/api/v1/cards/aaaaa", params:cards
         @json = JSON.parse(response.body)
       end
       it "HTTPメソッド404が返ること" do
@@ -107,8 +115,7 @@ RSpec.describe "ResultsAndBest", type: :request do
   describe "HTTPコード400系" do
     context "paramsがcardsでないとき" do
       before do
-        sample = {"aaaa": ["D2 S3 D3 D11 C2","H1 H4 H5 H11 H10"]}
-        post "/api/v1/cards/check", params: sample
+        post url, params: {"aaaa": ["D2 S3 D3 D11 C2","H1 H4 H5 H11 H10"]}
         @json = JSON.parse(response.body)
       end
       it "HTTPメソッド400が返ること" do
@@ -121,8 +128,7 @@ RSpec.describe "ResultsAndBest", type: :request do
 
     context "paramsがJOSN形式でないとき" do
       before do
-        sample = '{"carsd": ["D2 S3 D3 D11 C2","H1 H4 H5 H11 H10"]}'
-        post "/api/v1/cards/check", params: sample
+        post url, params: '{"carsd": ["D2 S3 D3 D11 C2","H1 H4 H5 H11 H10"]}'
         @json = JSON.parse(response.body)
       end
       it "HTTPメソッド400が返ること" do

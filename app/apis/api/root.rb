@@ -1,5 +1,6 @@
 module API
   class Root < Grape::API
+    require_relative "../../services/fixed_messages"
     include FixedMessages
     prefix 'api'
     format :json

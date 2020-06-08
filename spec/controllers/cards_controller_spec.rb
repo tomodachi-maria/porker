@@ -1,5 +1,5 @@
 require 'rails_helper'
-include Check
+include HandCheckModule
 include FixedMessages
 
 RSpec.describe CardsController, type: :controller do
@@ -11,23 +11,21 @@ RSpec.describe CardsController, type: :controller do
       it "top.html.erb viewに遷移するか" do
         expect(response).to render_template :top
       end
-
       it "ステータスコード200を返す" do
         expect(response).to have_http_status 200
       end
   end
 
   describe "POST #judge" do
-    # before do
-    #   post :judge, params: {cards: @sample }
-    # end
-
     context "@cards.error != nilのとき" do
-      it "error.html.erb viewに遷移するか" do
+      before do
         post :judge, params: {cards: "S1 S2 S3 S4"}
-
+      end
+      it "error.html.erb viewに遷移するか" do
         expect(response).to render_template ("error")
-        # expect(assigns(:error)).to eq ERROR_CARD_SIZE
+      end
+      it "ステータスコード200を返す" do
+        expect(response).to have_http_status 200
       end
     end
 
@@ -38,7 +36,6 @@ RSpec.describe CardsController, type: :controller do
       it "result.html.erb viewに遷移するか" do
          expect(response).to render_template :result
       end
-
       it "ステータスコード200を返す" do
         expect(response).to have_http_status 200
       end

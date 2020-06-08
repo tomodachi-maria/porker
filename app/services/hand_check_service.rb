@@ -1,52 +1,51 @@
-module Check
+module HandCheckModule
   class HandCheck
     require_relative "./fixed_messages"
     include FixedMessages
     require_relative "./regexes"
     include Regexes
-    attr_reader :cards, :error, :hand, :power
+    attr_reader :cards, :errors, :hand, :power, :best
 
     def initialize(cards)
       @cards = cards
+      @card_ary = @cards.split
+      @straight = false
+      @flash = false
+      @best = false
     end
 
     def check_error
-      @cards_ary = @cards.split
       check_same_cards
       check_unsuitable
       check_card_size
     end
 
     def check_result
-      case [check_straight?,check_flash?, count_num_pairs]
+      check_straight?
+      check_flash?
+      count_num_pairs
+      case [@straight,@flash, @num_pairs]
       when [true,true,[1,1,1,1,1]]
         @hand = RESULT_STRAIGHT_FLASH
         @power = 9
-
       when [false,false,[4,1]]
         @hand = RESULT_FOUR_OF_A_KIND
         @power = 8
-
       when [false,false,[3,2]]
         @hand = RESULT_FULLHOUSE
         @power = 7
-
       when [false,true,[1,1,1,1,1]]
         @hand = RESULT_FLASH
         @power = 6
-
       when [true,false,[1,1,1,1,1]]
         @hand = RESULT_STRAIGHT
         @power = 5
-
       when [false,false,[3,1,1]]
         @hand = RESULT_THREE_OF_A_KIND
         @power = 4
-
       when [false,false,[2,2,1]]
         @hand = RESULT_TWO_PAIR
         @power = 3
-
       when [false,false,[2,1,1,1]]
         @hand = RESULT_ONE_PAIR
         @power = 2
@@ -54,57 +53,53 @@ module Check
         @hand = RESULT_HIGH_CARD
         @power = 1
       end
+      # @@max_power = 0
+      # @@max_power = @power if @@max_power < @power
     end
 
+    # def check_best
+    #   @best = true if @power == @@max_power
+    # end
 
     private
 
     def check_card_size
-      cards_ary_for_card_size = @cards.split(/ /, -1)
-      if @cards_ary.size != 5 ||
-        cards_ary_for_card_size.size != 5
-        @error = ERROR_CARD_SIZE
-      end
+      card = @cards.split(/ /, -1)
+      @errors = ERROR_CARD_SIZE if card.size != 5 || @card_ary.size != 5
     end
 
     def check_unsuitable
-      error = []
-      @cards_ary.each_with_index do |h,idx|
-        error.push("#{idx + 1}#{ERROR_WHERE_IS_WRONG}(#{@cards_ary[idx]})") if h.match?(REGEX_ACCEPTABLE) == false
+      errors = []
+      @card_ary.each_with_index do |card,idx|
+        errors.push("#{idx + 1}#{ERROR_WHERE_IS_WRONG}(#{@card_ary[idx]})") unless card.match?(REGEX_ACCEPTABLE)
       end
-      @error = [].concat(error).push(ERROR_UNSUITABLE) if error.present?
+      @errors = [].concat(errors).push(ERROR_UNSUITABLE) if errors.present?
     end
 
     def check_same_cards
-      if @cards_ary.count > @cards_ary.uniq.count
-        @error = ERROR_SAME_CARDS
-      end
+        @errors = ERROR_SAME_CARDS unless @card_ary.count == @card_ary.uniq.count
     end
 
     def check_straight?
-      @num_string = @cards.gsub(/S|H|D|C/, "S" => "", "H" => "", "D" => "", "C" => "")
-      @num_ary = @num_string.split.map(&:to_i)
-      num_for_straight = @num_ary.sort.reverse
-      if num_for_straight[0] == num_for_straight[1] + 1 &&
-          num_for_straight[1] + 1 == num_for_straight[2] + 2 &&
-          num_for_straight[2] + 2 == num_for_straight[3] + 3 &&
-          num_for_straight[3] + 3 == num_for_straight[4] + 4
-        return true
-      elsif num_for_straight == [13,12,11,10,1]
-        return true
+      num = @cards.gsub(/S|H|D|C/, "S" => "", "H" => "", "D" => "", "C" => "")
+      @num_ary = num.split.map(&:to_i)
+      num_sort = @num_ary.sort.reverse
+      if num_sort[0] == num_sort[1] + 1 &&
+        num_sort[1] + 1 == num_sort[2] + 2 &&
+        num_sort[2] + 2 == num_sort[3] + 3 &&
+        num_sort[3] + 3 == num_sort[4] + 4
+        @straight = true
+      elsif num_sort == [13,12,11,10,1]
+        @straight = true
       else
-        return false
+        @straight = false
       end
     end
 
     def check_flash?
-      mark_string = @cards.gsub(/\d/,"")
-      mark_ary = mark_string.split
-      if mark_ary.uniq.size == 1
-        return true
-      else
-        return false
-      end
+      suit = @cards.gsub(/\d/,"")
+      suit_ary = suit.split
+      @flash = true if suit_ary.uniq.size == 1
     end
 
     def count_num_pairs
