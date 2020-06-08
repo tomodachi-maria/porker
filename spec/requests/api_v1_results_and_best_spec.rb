@@ -49,9 +49,9 @@ RSpec.describe "ResultsAndBest", type: :request do
       end
       it "errorに正しい値が入っていること" do
         expect(@json["error"][0]["card"]).to eq ("D 3 D3 D11 C2")
-        expect(@json["error"][0]["msg"]).to match ["1#{ERROR2_WHERE_IS_WRONG}(D)","2#{ERROR2_WHERE_IS_WRONG}(3)",ERROR2_UNSUITABLE]
+        expect(@json["error"][0]["msg"]).to match ["1#{ERROR_WHERE_IS_WRONG}(D)","2#{ERROR_WHERE_IS_WRONG}(3)",ERROR_UNSUITABLE]
         expect(@json["error"][1]["card"]).to eq ("H1 H5 H11 H10")
-        expect(@json["error"][1]["msg"]).to match ERROR1_NOT_FIVE_CARDS
+        expect(@json["error"][1]["msg"]).to match ERROR_CARD_SIZE
       end
     end
 
@@ -70,7 +70,7 @@ RSpec.describe "ResultsAndBest", type: :request do
       end
       it "errorに正しい値が入っていること" do
         expect(@json["error"][0]["card"]).to eq ("H1 H5 H11 H10")
-        expect(@json["error"][0]["msg"]).to match ERROR1_NOT_FIVE_CARDS
+        expect(@json["error"][0]["msg"]).to match ERROR_CARD_SIZE
       end
     end
   end

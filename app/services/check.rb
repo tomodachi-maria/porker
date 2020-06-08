@@ -4,18 +4,17 @@ module Check
     include FixedMessages
     require_relative "./regexes"
     include Regexes
-
     attr_reader :cards, :error, :hand, :power
 
-    def initialize(cards) #initializeメソッドは、initializeメソッドに何か引数を与えると、それを@cardsというインスタンス変数にしてくれる。
+    def initialize(cards)
       @cards = cards
     end
 
     def check_error
       @cards_ary = @cards.split
-      check_error_3_same_cards
-      check_error_2_unsuitable
-      check_error_1_not_five_cards
+      check_same_cards
+      check_unsuitable
+      check_card_size
     end
 
     def check_result
@@ -60,25 +59,25 @@ module Check
 
     private
 
-    def check_error_1_not_five_cards
-      cards_ary_for_error1 = @cards.split(/ /, -1)
+    def check_card_size
+      cards_ary_for_card_size = @cards.split(/ /, -1)
       if @cards_ary.size != 5 ||
-        cards_ary_for_error1.size != 5
-        @error = ERROR1_NOT_FIVE_CARDS
+        cards_ary_for_card_size.size != 5
+        @error = ERROR_CARD_SIZE
       end
     end
 
-    def check_error_2_unsuitable
+    def check_unsuitable
       error = []
       @cards_ary.each_with_index do |h,idx|
-        error.push("#{idx + 1}#{ERROR2_WHERE_IS_WRONG}(#{@cards_ary[idx]})") if h.match?(REGEX_ACCEPTABLE) == false
+        error.push("#{idx + 1}#{ERROR_WHERE_IS_WRONG}(#{@cards_ary[idx]})") if h.match?(REGEX_ACCEPTABLE) == false
       end
-      @error = [].concat(error).push(ERROR2_UNSUITABLE) if error != []
+      @error = [].concat(error).push(ERROR_UNSUITABLE) if error.present?
     end
 
-    def check_error_3_same_cards
+    def check_same_cards
       if @cards_ary.count > @cards_ary.uniq.count
-        @error = ERROR3_SAME_CARDS
+        @error = ERROR_SAME_CARDS
       end
     end
 
@@ -113,6 +112,5 @@ module Check
       num_pairs_array = num_pairs_hash.map{ |_, value| value } #[1,2,1,1]みたいになる。同じ数字の枚数を配列にする。
       @num_pairs = num_pairs_array.sort.reverse
     end
-
   end
 end

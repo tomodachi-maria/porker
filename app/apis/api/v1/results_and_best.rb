@@ -9,53 +9,38 @@ module API
         params do
           requires :cards, type:Array[String]
         end
-
         post :check do
           card_set = params[:cards]
-          each_card = []
+          max_power = 0
+          handcheck_list = []
           card_set.each do |card|
             handcheck = HandCheck.new(card)
-            handcheck.check_error
-            handcheck.check_result
-            each_card.push(handcheck)
+            handcheck.check_error #この段階でやっておけば、あとでまたeach doしてインスタンス変数を生成する必要がなくなる
+            if handcheck.error.nil?
+              handcheck.check_result
+              max_power = handcheck.power if handcheck.power > max_power
+            end
+            handcheck_list.push(handcheck)
           end
 
-          powers = []
-          each_card.each do |c|
-            powers.push(c.power)
-          end
-
-          collect_card_return = []
-          error_card_return = []
-          each_card.each do |c|
-            if  c.power == powers.max
-              @best = true
+          result = []
+          error = []
+          handcheck_list.each do |c|
+            best = false
+            best = true if  c.power == max_power
+            if c.error.nil?
+              result.push({"card":c.cards, "hand":c.hand, "best":best})
             else
-              @best = false
-            end
-            if c.error == nil
-              collect_card_return.push({"card":c.cards, "hand":c.hand, "best":@best})
-            else
-              error_card_return.push({"card":c.cards, "msg":c.error})
+              error.push({"card":c.cards, "msg":c.error})
             end
           end
-          pp "error_card_return"
-          pp error_card_return
 
           p = {}
-          if collect_card_return != [] && error_card_return != []
-            p.store("result",collect_card_return)
-            p.store("error",error_card_return)
-          elsif collect_card_return == []
-            p.store("error",error_card_return)
-          else  error_card_return == []
-            p.store("result",collect_card_return)
-          end
-
+          p.store("result",result) if result.present?
+          p.store("error",error) if error.present?
           present p
-
          end
        end
       end
     end
-  end
+    end

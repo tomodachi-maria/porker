@@ -27,7 +27,7 @@ RSpec.describe CardsController, type: :controller do
         post :judge, params: {cards: "S1 S2 S3 S4"}
 
         expect(response).to render_template ("error")
-        # expect(assigns(:error)).to eq ERROR1_NOT_FIVE_CARDS
+        # expect(assigns(:error)).to eq ERROR_CARD_SIZE
       end
     end
 

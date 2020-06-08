@@ -4,7 +4,7 @@ include FixedMessages
 
 RSpec.describe HandCheck do
   describe '#check_error' do
-    context "ERROR1が機能すること" do #contextは条件みたいに書くらしい。#HandCheck.new(変数)は、毎回やるのでbefore do-endすると良い。
+    context "ERROR_CARD_SIZEが機能すること" do #contextは条件みたいに書くらしい。#HandCheck.new(変数)は、毎回やるのでbefore do-endすると良い。
       it "/,　_では区切れないこと" do
         cards = HandCheck.new("S1/S2,S3　S4_S5")
         a = cards.cards
@@ -15,56 +15,56 @@ RSpec.describe HandCheck do
         a = cards.cards
         expect(a.split(/ /, -1)).to eq ["","S1","","S2","S3","S4","S5",""]
       end
-      it "指定したカードが4枚の時にERROR1を返すこと" do
-        expect(HandCheck.new("S1 S2 S3 S4").check_error).to be == (ERROR1_NOT_FIVE_CARDS)
+      it "指定したカードが4枚の時にERROR_CARD_SIZEを返すこと" do
+        expect(HandCheck.new("S1 S2 S3 S4").check_error).to be == (ERROR_CARD_SIZE)
       end
-      it "指定したカードが6枚の時にERROR1を返すこと" do
-        expect(HandCheck.new("S1 S2 S3 S4 S5 S6").check_error).to be == (ERROR1_NOT_FIVE_CARDS)
+      it "指定したカードが6枚の時にERROR_CARD_SIZEを返すこと" do
+        expect(HandCheck.new("S1 S2 S3 S4 S5 S6").check_error).to be == (ERROR_CARD_SIZE)
       end
     end
 
 
-    context "ERROR2が機能すること" do
-      it "小文字のアルファベットが含まれている時にERROR2を返すこと" do
+    context "ERROR_UNSUITABLEが機能すること" do
+      it "小文字のアルファベットが含まれている時にERROR_UNSUITABLEを返すこと" do
         cards= HandCheck.new("s1 S2 S3 S4 S5")
         cards.check_error
-        expect(cards.error).to match ["1#{ERROR2_WHERE_IS_WRONG}(s1)",ERROR2_UNSUITABLE]
+        expect(cards.error).to match ["1#{ERROR_WHERE_IS_WRONG}(s1)",ERROR_UNSUITABLE]
       end
-      it "SDHC以外のアルファベットが含まれている時にERROR2を返すこと" do
+      it "SDHC以外のアルファベットが含まれている時にERROR_UNSUITABLEを返すこと" do
         cards= HandCheck.new("A7 C6 C5 C4 C3")
         cards.check_error
-        expect(cards.error).to match ["1#{ERROR2_WHERE_IS_WRONG}(A7)",ERROR2_UNSUITABLE]
+        expect(cards.error).to match ["1#{ERROR_WHERE_IS_WRONG}(A7)",ERROR_UNSUITABLE]
       end
-      it "1~13以外の数字が含まれている時にERROR2を返すこと" do
+      it "1~13以外の数字が含まれている時にERROR_UNSUITABLEを返すこと" do
         cards= HandCheck.new("C14 C6 C5 C4 C3")
         cards.check_error
-        expect(cards.error).to match ["1#{ERROR2_WHERE_IS_WRONG}(C14)",ERROR2_UNSUITABLE]
+        expect(cards.error).to match ["1#{ERROR_WHERE_IS_WRONG}(C14)",ERROR_UNSUITABLE]
       end
       it "不正なカード指定が2枚以上あった時に全ての不正箇所を返すこと" do
         cards= HandCheck.new("C14 C6 C5 s4 C3")
         cards.check_error
-        expect(cards.error).to match ["1#{ERROR2_WHERE_IS_WRONG}(C14)","4#{ERROR2_WHERE_IS_WRONG}(s4)",ERROR2_UNSUITABLE]
+        expect(cards.error).to match ["1#{ERROR_WHERE_IS_WRONG}(C14)","4#{ERROR_WHERE_IS_WRONG}(s4)",ERROR_UNSUITABLE]
       end
     end
 
-    context "ERROR3が機能すること" do
-      it "カードが重複している時にERROR3を返すこと" do
+    context "ERROR_SAME_CARDSが機能すること" do
+      it "カードが重複している時にERROR_SAME_CARDSを返すこと" do
         cards= HandCheck.new("D1 D1 D3 D4 D5")
         cards.check_error
-        expect(cards.error).to be == (ERROR3_SAME_CARDS)
+        expect(cards.error).to be == (ERROR_SAME_CARDS)
       end
     end
 
-    context "ERROR1>ERROR2>ERROR3の優先順位でエラー文が返ってくること" do
-      it "ERROR1>ERROR2の優先順位であること" do
+    context "CARD_SIZE>UNSUITABLE>SAME_CARDSの優先順位でエラー文が返ってくること" do
+      it "CARD_SIZE>UNSUITABLEの優先順位であること" do
         cards= HandCheck.new("s1 D3 D4 D5")
         cards.check_error
-        expect(cards.error).to be == (ERROR1_NOT_FIVE_CARDS)
+        expect(cards.error).to be == (ERROR_CARD_SIZE)
       end
-      it "ERROR1>ERROR2の優先順位であること" do
+      it "CARD_SIZE>UNSUITABLEの優先順位であること" do
         cards= HandCheck.new("s1 D3 D4 D5 D5")
         cards.check_error
-        expect(cards.error).to match ["1#{ERROR2_WHERE_IS_WRONG}(s1)",ERROR2_UNSUITABLE]
+        expect(cards.error).to match ["1#{ERROR_WHERE_IS_WRONG}(s1)",ERROR_UNSUITABLE]
       end
     end
   end
