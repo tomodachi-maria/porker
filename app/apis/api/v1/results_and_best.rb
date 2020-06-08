@@ -39,14 +39,16 @@ module API
               error_card_return.push({"card":c.cards, "msg":c.error})
             end
           end
+          pp "error_card_return"
+          pp error_card_return
 
           p = {}
-          if collect_card_return != nil && error_card_return != nil
+          if collect_card_return != [] && error_card_return != []
             p.store("result",collect_card_return)
             p.store("error",error_card_return)
-          elsif collect_card_return == nil
+          elsif collect_card_return == []
             p.store("error",error_card_return)
-          else  error_card_return == nil
+          else  error_card_return == []
             p.store("result",collect_card_return)
           end
 

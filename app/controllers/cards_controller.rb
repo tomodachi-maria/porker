@@ -15,5 +15,4 @@
             render :result
           end
       end
-
   end

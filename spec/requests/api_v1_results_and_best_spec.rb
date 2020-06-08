@@ -1,12 +1,11 @@
 require 'rails_helper'
 include FixedMessages
 RSpec.describe "ResultsAndBest", type: :request do
-      @sample = {"cards": ["D2 S3 D3 D11 C2","H1 H5 H11 H10"]}
+       @sample = {"cards": ["D2 S3 D3 D11 C2","H1 H5 H11 H10"]}
   describe "HTTPコード200系" do
-    context "正しい手札のみ送られてきたとき" do
+    context "強さの異なる正しい手札のみが送られてきたとき" do
       before do
-        sample = {"cards": ["D2 S3 D3 D11 C2","H1 H4 H5 H11 H10"]}
-        post "/api/v1/cards/check", params: sample
+        post "/api/v1/cards/check", params: {"cards": ["D2 S3 D3 D11 C2","H1 H4 H5 H11 H10"]}
         @json = JSON.parse(response.body)
       end
       it "HTTPメソッド201が返ること" do
@@ -22,10 +21,27 @@ RSpec.describe "ResultsAndBest", type: :request do
       end
     end
 
+    context "強さが等しい正しい手札のみが送られてきたとき" do
+      before do
+        post "/api/v1/cards/check", params: {"cards": ["S2 S3 S4 S5 S6","H1 H10 H11 H12 H13"]}
+        @json = JSON.parse(response.body)
+      end
+      it "HTTPメソッド201が返ること" do
+        expect(response).to have_http_status(201)
+      end
+      it "resultに正しい値が入っていること" do
+        expect(@json["result"][0]["card"]).to eq ("S2 S3 S4 S5 S6")
+        expect(@json["result"][0]["hand"]).to eq (RESULT_STRAIGHT_FLASH)
+        expect(@json["result"][0]["best"]).to eq (true)
+        expect(@json["result"][1]["card"]).to eq ("H1 H10 H11 H12 H13")
+        expect(@json["result"][1]["hand"]).to eq (RESULT_STRAIGHT_FLASH)
+        expect(@json["result"][1]["best"]).to eq (true)
+      end
+    end
+
     context "エラーを含んだ手札のみ送られてきたとき" do
       before do
-        sample = {"cards": ["D 3 D3 D11 C2","H1 H5 H11 H10"]}
-        post "/api/v1/cards/check", params: sample
+        post "/api/v1/cards/check", params: {"cards": ["D 3 D3 D11 C2","H1 H5 H11 H10"]}
         @json = JSON.parse(response.body)
       end
       it "HTTPメソッド201が返ること" do
@@ -41,8 +57,7 @@ RSpec.describe "ResultsAndBest", type: :request do
 
     context "正しい手札・エラーを含んだ手札の両方があるとき" do
       before do
-        sample = {"cards": ["D2 S3 D3 D11 C2","H1 H5 H11 H10"]}
-        post "/api/v1/cards/check", params: sample
+        post "/api/v1/cards/check", params: {"cards": ["D2 S3 D3 D11 C2","H1 H5 H11 H10"]}
         @json = JSON.parse(response.body)
       end
       it "HTTPメソッド201が返ること" do

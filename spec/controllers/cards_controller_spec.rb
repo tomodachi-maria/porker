@@ -2,7 +2,7 @@ require 'rails_helper'
 include Check
 include FixedMessages
 
-RSpec.describe CardsController, type: :controller do #require "cards_controller"は、ここであるから要らない。
+RSpec.describe CardsController, type: :controller do
   render_views
   describe "GET #top" do
     before do
@@ -18,26 +18,30 @@ RSpec.describe CardsController, type: :controller do #require "cards_controller"
   end
 
   describe "POST #judge" do
-    before do
-      post :judge, params: {cards: @sample }
-    end
+    # before do
+    #   post :judge, params: {cards: @sample }
+    # end
 
-    context "@cards.error != nilだった時" do
+    context "@cards.error != nilのとき" do
       it "error.html.erb viewに遷移するか" do
-        @sample = "S1 S2 S3 S4"
+        post :judge, params: {cards: "S1 S2 S3 S4"}
+
         expect(response).to render_template ("error")
+        # expect(assigns(:error)).to eq ERROR1_NOT_FIVE_CARDS
       end
     end
 
-    # context "@cards.error == nilだった時" do
-    #   it "result.html.erb viewに遷移するか" do
-    #      @sample = "S1 S2 S3 S4 S5"
-    #      expect(response).to render_template :result
-    #   end
+    context "@cards.error == nilだったとき" do
+      before do
+        post :judge, params: {cards: "S1 S2 S3 S4 S5"}
+      end
+      it "result.html.erb viewに遷移するか" do
+         expect(response).to render_template :result
+      end
 
       it "ステータスコード200を返す" do
-        @sample = "S1 S2 S3 S4 S5"
         expect(response).to have_http_status 200
       end
     end
   end
+end

@@ -16,14 +16,10 @@ RSpec.describe HandCheck do
         expect(a.split(/ /, -1)).to eq ["","S1","","S2","S3","S4","S5",""]
       end
       it "指定したカードが4枚の時にERROR1を返すこと" do
-        cards= HandCheck.new("S1 S2 S3 S4")
-        cards.check_error
-        expect(cards.error).to be == (ERROR1_NOT_FIVE_CARDS)
+        expect(HandCheck.new("S1 S2 S3 S4").check_error).to be == (ERROR1_NOT_FIVE_CARDS)
       end
       it "指定したカードが6枚の時にERROR1を返すこと" do
-        cards= HandCheck.new("S1 S2 S3 S4 S5 S6")
-        cards.check_error
-        expect(cards.error).to be == (ERROR1_NOT_FIVE_CARDS)
+        expect(HandCheck.new("S1 S2 S3 S4 S5 S6").check_error).to be == (ERROR1_NOT_FIVE_CARDS)
       end
     end
 

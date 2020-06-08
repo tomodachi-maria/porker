@@ -9,7 +9,7 @@ module API
       error!({"error" => [{ "msg" => API_ERROR_404}] } , 404)
     end
 
-    #paramsがcardsじゃない時
+    #paramsを渡せていない時、形式がJSONでない時
     rescue_from Grape::Exceptions::Base do
       error!({"error" => [{ "msg" => API_ERROR_400}] } , 400)
     end
