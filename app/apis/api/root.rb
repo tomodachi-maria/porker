@@ -15,10 +15,10 @@ module API
       error!({"error" => [{ "msg" => API_ERROR_400}] } , 400)
     end
 
-    #それ以外は500（システムの方に問題があるという風に返す。）
-    # rescue_from :all do
-    #   error!({"error" => "unexpected error"}, 500)
-    # end
+    # それ以外は500（システムの方に問題があるという風に返す。）
+    rescue_from :all do
+      error!({"error" => "unexpected error"}, 500)
+    end
 
     mount API::V1::Root
 

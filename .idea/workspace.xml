@@ -20,14 +20,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="534d281f-aec0-4404-877f-9cd8fd1ce2b9" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/apis/api/v1/results_and_best.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/apis/api/v1/results_and_best.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/controllers/cards_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/cards_controller.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/services/check.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/check.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/services/fixed_messages.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/fixed_messages.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spec/controllers/cards_controller_spec.rb" beforeDir="false" afterPath="$PROJECT_DIR$/spec/controllers/cards_controller_spec.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spec/requests/api_v1_results_and_best_spec.rb" beforeDir="false" afterPath="$PROJECT_DIR$/spec/requests/api_v1_results_and_best_spec.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spec/services/check_spec.rb" beforeDir="false" afterPath="$PROJECT_DIR$/spec/services/check_spec.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/apis/api/root.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/apis/api/root.rb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
