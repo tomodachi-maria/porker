@@ -1,7 +1,10 @@
 Rails.application.routes.draw do
-    get "/" => "home#top"
-    #homeコントローラのtopアクションを呼び出してください。
-    post "/judge" => "home#judge"
-    get "/result" => "home#result"
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  get "/" => "cards#top"
+  #cardsコントローラのtopアクションを呼び出してください。
+  post "/judge" => "cards#judge"
+  get "/judge" => "cards#top"
+ # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+
+  mount API::Root => '/'
+
 end
